@@ -26,62 +26,231 @@
 
 ## 1.2 DCMST (Degree Constrained MST)
 
+
+**DCMST** adalah masalah mencari Minimum Spanning Tree dimana setiap vertex memiliki batasan maksimum degree (jumlah edge yang boleh terhubung).
+
 ```
-╔═════════════════════════════════════════════════════════════════════╗
-║  DCMST CONSTRAINT:                                                  ║
-║                                                                     ║
-║  Untuk setiap vertex v:   degree(v) ≤ d_max = 3                     ║
-║  (Setiap vertex/kota maksimal memiliki 3 koneksi)                   ║
-╚═════════════════════════════════════════════════════════════════════╝
+┌─────────────────────────────────────────────────────────────────────┐
+│  DCMST CONSTRAINT:                                                  │
+│                                                                     │
+│  • Setiap vertex v: degree(v) ≤ d_max                              │
+│  • Dalam contoh ini: d_max = 2 (setiap kota maksimal 2 koneksi)    │
+│                                                                     │
+│  Mengapa penting?                                                   │
+│  → Merepresentasikan kapasitas terbatas (misal: bandwidth router)  │
+│  → Mencegah bottleneck pada satu node                              │
+└─────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
 # BAGIAN 2: RUMUS-RUMUS ACO-DCMST
 
-## Parameter: α=1, β=2, ρ=0.5, Q=100, τ₀=1.0, d_max=3
+## 2.1 Notasi dan Parameter
 
-### RUMUS 1: HEURISTIK
 ```
-         η[i][j] = 1 / d[i][j]
-```
-
-### RUMUS 2: PROBABILITAS
-```
-                [τ(u,v)]^α × [η(u,v)]^β × feasible(u,v)
-    P(u,v) = ──────────────────────────────────────────────
-              Σ [τ(u,w)]^α × [η(u,w)]^β × feasible(u,w)
-
-    feasible(u,v) = 1 jika deg[u] < 3 DAN deg[v] < 3
-                  = 0 otherwise
-```
-
-### RUMUS 3: EVAPORASI
-```
-    τ[i][j] ← 0.5 × τ[i][j]
-```
-
-### RUMUS 4: DEPOSIT
-```
-    Δτ = Q / Cost(T) = 100 / Cost(T)
+┌─────────────────────────────────────────────────────────────────────┐
+│  NOTASI:                                                            │
+│  • V = {A, B, C, D, E} : Himpunan vertex (5 kota)                   │
+│  • E = himpunan edge dengan bobot d[i][j]                           │
+│  • τ[i][j] : Feromon pada edge (i,j)                                │
+│  • η[i][j] : Heuristik = 1/d[i][j] (inverse jarak)                  │
+│  • T : Himpunan vertex yang sudah ada di tree                       │
+│  • deg[v] : Degree saat ini dari vertex v                           │
+├─────────────────────────────────────────────────────────────────────┤
+│  PARAMETER:                                                         │
+│  • α = 1   : Bobot pengaruh feromon                                 │
+│  • β = 2   : Bobot pengaruh heuristik                               │
+│  • ρ = 0.5 : Tingkat evaporasi feromon (50%)                        │
+│  • Q = 100 : Konstanta deposit feromon                              │
+│  • τ₀ = 1.0 : Feromon awal                                          │
+│  • d_max = 2 : Degree maksimum per vertex                           │
+│  • n_ants = 3 : Jumlah semut  (dalm case ini dimisalkan ada 3)                                      │
+└─────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-# BAGIAN 3: INPUT (Case 3 semit, 5 kota)
+## 2.2 Rumus Utama ACO-DCMST
 
-## Distance Matrix (5 kota: A,B,C,D,E):
+### RUMUS 1: Heuristik (Visibility)
+```
+                    1
+    η[i][j] = ─────────
+               d[i][j]
+
+Semakin pendek jarak, semakin tinggi nilai heuristik
+→ Edge pendek lebih "menarik" untuk dipilih
+```
+
+### RUMUS 2: Probabilitas Pemilihan Edge
+```
+                      [τ[u][v]]^α × [η[u][v]]^β × feasible(u,v)
+    P(u,v) = ──────────────────────────────────────────────────────
+              Σ [τ[u][w]]^α × [η[u][w]]^β × feasible(u,w)
+              w∈candidates
+
+Dimana:
+• τ[u][v]^α = faktor feromon (pengalaman kolektif)
+• η[u][v]^β = faktor heuristik (kualitas edge)
+• feasible(u,v) = 1 jika edge valid (tidak melanggar degree), 0 otherwise
+• candidates = {w : w ∉ T, deg[u] < d_max, deg[w] < d_max}
+```
+
+### RUMUS 3: Evaporasi Feromon
+```
+    τ[i][j] ← (1 - ρ) × τ[i][j]
+
+Dengan ρ = 0.5:
+    τ[i][j] ← 0.5 × τ[i][j]
+
+→ Feromon berkurang 50% setiap iterasi
+→ "Melupakan" jalur yang jarang digunakan
+```
+
+### RUMUS 4: Deposit Feromon
+```
+    Untuk setiap edge (i,j) dalam solusi valid:
+    
+              Q
+    Δτ = ─────────
+          Cost(T)
+
+    τ[i][j] ← τ[i][j] + Δτ
+
+Dengan Q = 100:
+• Solusi dengan cost rendah → deposit lebih besar
+• Memperkuat jalur yang menghasilkan solusi baik
+```
+
+### RUMUS 5: Update Feromon Lengkap
+```
+    τ[i][j] ← (1 - ρ) × τ[i][j] + Σ Δτₖ
+                                  k=1..m
+
+Dimana m = jumlah semut yang menggunakan edge (i,j)
+```
+
+---
+
+# BAGIAN 3: INPUT DAN INISIALISASI
+
+## 3.1 Input: Graf 5 Kota (case dri Prof Wamiliana/Ibu Dian)
 
 ```
-       A      B      C      D      E
-A      -      4      9     11      7
-B      4      -      4     13     10
-C      9      4      -      6      2
-D     11     13      6      -      8
-E      7     10      2      8      -
+        A ──────4────── B
+       /|\              |\
+      / | \             | \
+     7  |  9            4  13
+    /   |   \           |   \
+   E    11   \          C    D
+    \   |     \        /    /
+     \  |      \      6    /
+      8 |       \    /    8
+       \|        \  /    /
+        D ────────\/────/
+                  C
+
+Distance Matrix d[i][j]:
+┌─────┬─────┬─────┬─────┬─────┬─────┐
+│     │  A  │  B  │  C  │  D  │  E  │
+├─────┼─────┼─────┼─────┼─────┼─────┤
+│  A  │  0  │  4  │  9  │ 11  │  7  │
+│  B  │  4  │  0  │  4  │ 13  │ 10  │
+│  C  │  9  │  4  │  0  │  6  │  2  │
+│  D  │ 11  │ 13  │  6  │  0  │  8  │
+│  E  │  7  │ 10  │  2  │  8  │  0  │
+└─────┴─────┴─────┴─────┴─────┴─────┘
 ```
 
-## Heuristic η = 1/d:
+## 3.2 Inisialisasi Feromon τ₀ = 1.0
+
+```
+Initial Pheromone Matrix τ[i][j]:
+┌─────┬─────┬─────┬─────┬─────┬─────┐
+│     │  A  │  B  │  C  │  D  │  E  │
+├─────┼─────┼─────┼─────┼─────┼─────┤
+│  A  │  -  │ 1.0 │ 1.0 │ 1.0 │ 1.0 │
+│  B  │ 1.0 │  -  │ 1.0 │ 1.0 │ 1.0 │
+│  C  │ 1.0 │ 1.0 │  -  │ 1.0 │ 1.0 │
+│  D  │ 1.0 │ 1.0 │ 1.0 │  -  │ 1.0 │
+│  E  │ 1.0 │ 1.0 │ 1.0 │ 1.0 │  -  │
+└─────┴─────┴─────┴─────┴─────┴─────┘
+```
+
+## 3.3 Hitung Heuristik η[i][j] = 1/d[i][j]
+
+```
+Heuristic Matrix η[i][j]:
+┌─────┬───────┬───────┬───────┬───────┬───────┐
+│     │   A   │   B   │   C   │   D   │   E   │
+├─────┼───────┼───────┼───────┼───────┼───────┤
+│  A  │   -   │ 0.250 │ 0.111 │ 0.091 │ 0.143 │
+│  B  │ 0.250 │   -   │ 0.250 │ 0.077 │ 0.100 │
+│  C  │ 0.111 │ 0.250 │   -   │ 0.167 │ 0.500 │
+│  D  │ 0.091 │ 0.077 │ 0.167 │   -   │ 0.125 │
+│  E  │ 0.143 │ 0.100 │ 0.500 │ 0.125 │   -   │
+└─────┴───────┴───────┴───────┴───────┴───────┘
+
+Contoh perhitungan:
+• η[A][B] = 1/4 = 0.250
+• η[C][E] = 1/2 = 0.500 (tertinggi! → edge terpendek)
+• η[A][D] = 1/11 = 0.091 (terendah → edge terpanjang)
+```
+
+---
+
+# Sebelum ke ITERASI 1 :
+## SEMUT 1: Konstruksi Tree
+### SEMUT 1-Step 1: Inisialisasi
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  SEMUT 1 - START                                                    │
+├─────────────────────────────────────────────────────────────────────┤
+│  • Start vertex: A (central vertex)                                 │
+│  • T (tree vertices) = {A}                                          │
+│  • Tree edges = []                                                  │
+│  • deg[A]=0, deg[B]=0, deg[C]=0, deg[D]=0, deg[E]=0                 │
+│  • d_max = 2 (setiap vertex maksimal 2 koneksi)                     │
+│  • Target: 4 edges (n-1 = 5-1 = 4)                                  │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### SEMUT 1-Step 2: Pilih Edge Pertama (dari A)
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  ITERASI 1 - EDGE 1                                                 │
+├─────────────────────────────────────────────────────────────────────┤
+│  T = {A}, mencari edge ke vertex di luar T                          │
+│  Candidates: (A,B), (A,C), (A,D), (A,E)                             │
+│                                                                     │
+│  Semua feasible karena deg[A]=0 < 2 dan deg[*]=0 < 2                │
+└─────────────────────────────────────────────────────────────────────┘
+
+Hitung nilai τ^α × η^β untuk setiap candidate:
+
+• (A,B): τ[A][B]^1 × η[A][B]^2 = 1.0^1 × 0.250^2 = 1 × 0.0625 = 0.0625
+• (A,C): τ[A][C]^1 × η[A][C]^2 = 1.0^1 × 0.111^2 = 1 × 0.0123 = 0.0123
+• (A,D): τ[A][D]^1 × η[A][D]^2 = 1.0^1 × 0.091^2 = 1 × 0.0083 = 0.0083
+• (A,E): τ[A][E]^1 × η[A][E]^2 = 1.0^1 × 0.143^2 = 1 × 0.0204 = 0.0204
+
+Total = 0.0625 + 0.0123 + 0.0083 + 0.0204 = 0.1035
+
+PROBABILITAS :
+┌────────┬────────────┬─────────────────────────┐
+│  Edge  │   Value    │     Probability         │
+├────────┼────────────┼─────────────────────────┤
+│ (A,B)  │   0.0625   │ 0.0625/0.1035 = 60.4%   │
+│ (A,C)  │   0.0123   │ 0.0123/0.1035 = 11.9%   │
+│ (A,D)  │   0.0083   │ 0.0083/0.1035 =  8.0%   │
+│ (A,E)  │   0.0204   │ 0.0204/0.1035 = 19.7%   │
+└────────┴────────────┴─────────────────────────┘
+
+→ PILIH (A,B) dengan probabilitas tertinggi (60.4%)
+  (Atau bisa juga dengan menggunakan roulette wheel selection/dengan menggunakan cara random terhadap komulatif probability)
+```
+
+## SEMUT 1-Hasil Heuristic η = 1/d:
 
 ```
          A        B        C        D        E
@@ -96,7 +265,7 @@ E     0.1429   0.1000   0.5000   0.1250      -
 
 ---
 
-# BAGIAN 4: ITERASI 1 - KONSTRUKSI SOLUSI
+# BAGIAN 4: ITERASI 1 - KONSTRUKSI SOLUSI (HASIL HITUNG PROBABILITAS atas η = 1/d)
 
 ## 🐜 SEMUT 1
 
