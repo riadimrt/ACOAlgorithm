@@ -1,4 +1,4 @@
-# 🐜 ACO untuk Degree Constrained Minimum Spanning Tree (DCMST)
+# Contoh Hitung Manual ACO untuk Degree Constrained Minimum Spanning Tree (DCMST)
 ## Panduan Lengkap dengan Perhitungan Step-by-Step
 
 ---
@@ -69,21 +69,21 @@
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │  NOTASI:                                                            │
-│  • V = {A, B, C, D, E} : Himpunan vertex (5 kota)                  │
-│  • E = himpunan edge dengan bobot d[i][j]                          │
-│  • τ[i][j] : Feromon pada edge (i,j)                               │
-│  • η[i][j] : Heuristik = 1/d[i][j] (inverse jarak)                 │
-│  • T : Himpunan vertex yang sudah ada di tree                      │
-│  • deg[v] : Degree saat ini dari vertex v                          │
+│  • V = {A, B, C, D, E} : Himpunan vertex (5 kota)                   │
+│  • E = himpunan edge dengan bobot d[i][j]                           │
+│  • τ[i][j] : Feromon pada edge (i,j)                                │
+│  • η[i][j] : Heuristik = 1/d[i][j] (inverse jarak)                  │
+│  • T : Himpunan vertex yang sudah ada di tree                       │
+│  • deg[v] : Degree saat ini dari vertex v                           │
 ├─────────────────────────────────────────────────────────────────────┤
 │  PARAMETER:                                                         │
-│  • α = 1   : Bobot pengaruh feromon                                │
-│  • β = 2   : Bobot pengaruh heuristik                              │
-│  • ρ = 0.5 : Tingkat evaporasi feromon (50%)                       │
-│  • Q = 100 : Konstanta deposit feromon                             │
-│  • τ₀ = 1.0 : Feromon awal                                         │
-│  • d_max = 2 : Degree maksimum per vertex                          │
-│  • n_ants = 3 : Jumlah semut                                       │
+│  • α = 1   : Bobot pengaruh feromon                                 │
+│  • β = 2   : Bobot pengaruh heuristik                               │
+│  • ρ = 0.5 : Tingkat evaporasi feromon (50%)                        │
+│  • Q = 100 : Konstanta deposit feromon                              │
+│  • τ₀ = 1.0 : Feromon awal                                          │
+│  • d_max = 2 : Degree maksimum per vertex                           │
+│  • n_ants = 3 : Jumlah semut  (dalm case ini dimisalkan ada 3)                                      │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -153,7 +153,7 @@ Dimana m = jumlah semut yang menggunakan edge (i,j)
 
 # BAGIAN 3: INPUT DAN INISIALISASI
 
-## 3.1 Input: Graf 5 Kota
+## 3.1 Input: Graf 5 Kota (case dri Prof Wamiliana/Ibu Dian)
 
 ```
         A ──────4────── B
@@ -227,12 +227,12 @@ Contoh perhitungan:
 ┌─────────────────────────────────────────────────────────────────────┐
 │  SEMUT 1 - START                                                    │
 ├─────────────────────────────────────────────────────────────────────┤
-│  • Start vertex: A (central vertex)                                │
-│  • T (tree vertices) = {A}                                         │
-│  • Tree edges = []                                                 │
-│  • deg[A]=0, deg[B]=0, deg[C]=0, deg[D]=0, deg[E]=0               │
-│  • d_max = 2 (setiap vertex maksimal 2 koneksi)                   │
-│  • Target: 4 edges (n-1 = 5-1 = 4)                                │
+│  • Start vertex: A (central vertex)                                 │
+│  • T (tree vertices) = {A}                                          │
+│  • Tree edges = []                                                  │
+│  • deg[A]=0, deg[B]=0, deg[C]=0, deg[D]=0, deg[E]=0                 │
+│  • d_max = 2 (setiap vertex maksimal 2 koneksi)                     │
+│  • Target: 4 edges (n-1 = 5-1 = 4)                                  │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -241,10 +241,10 @@ Contoh perhitungan:
 ┌─────────────────────────────────────────────────────────────────────┐
 │  ITERASI 1 - EDGE 1                                                 │
 ├─────────────────────────────────────────────────────────────────────┤
-│  T = {A}, mencari edge ke vertex di luar T                         │
-│  Candidates: (A,B), (A,C), (A,D), (A,E)                            │
+│  T = {A}, mencari edge ke vertex di luar T                          │
+│  Candidates: (A,B), (A,C), (A,D), (A,E)                             │
 │                                                                     │
-│  Semua feasible karena deg[A]=0 < 2 dan deg[*]=0 < 2              │
+│  Semua feasible karena deg[A]=0 < 2 dan deg[*]=0 < 2                │
 └─────────────────────────────────────────────────────────────────────┘
 
 Hitung nilai τ^α × η^β untuk setiap candidate:
@@ -256,18 +256,18 @@ Hitung nilai τ^α × η^β untuk setiap candidate:
 
 Total = 0.0625 + 0.0123 + 0.0083 + 0.0204 = 0.1035
 
-PROBABILITAS:
+PROBABILITAS :
 ┌────────┬────────────┬─────────────────────────┐
 │  Edge  │   Value    │     Probability         │
 ├────────┼────────────┼─────────────────────────┤
-│ (A,B)  │   0.0625   │ 0.0625/0.1035 = 60.4%  │
-│ (A,C)  │   0.0123   │ 0.0123/0.1035 = 11.9%  │
-│ (A,D)  │   0.0083   │ 0.0083/0.1035 =  8.0%  │
-│ (A,E)  │   0.0204   │ 0.0204/0.1035 = 19.7%  │
+│ (A,B)  │   0.0625   │ 0.0625/0.1035 = 60.4%   │
+│ (A,C)  │   0.0123   │ 0.0123/0.1035 = 11.9%   │
+│ (A,D)  │   0.0083   │ 0.0083/0.1035 =  8.0%   │
+│ (A,E)  │   0.0204   │ 0.0204/0.1035 = 19.7%   │
 └────────┴────────────┴─────────────────────────┘
 
 → PILIH (A,B) dengan probabilitas tertinggi (60.4%)
-  (Atau gunakan roulette wheel selection)
+  (Atau bisa juga dengan menggunakan roulette wheel selection/dengan menggunakan cara random terhadap komulatif probability)
 ```
 
 ### Update setelah Edge 1:
@@ -275,10 +275,10 @@ PROBABILITAS:
 ┌─────────────────────────────────────────────────────────────────────┐
 │  SETELAH PILIH (A,B):                                               │
 ├─────────────────────────────────────────────────────────────────────┤
-│  • T = {A, B}                                                      │
-│  • Tree edges = [(A,B,4)]                                          │
-│  • deg[A]=1, deg[B]=1, deg[C]=0, deg[D]=0, deg[E]=0               │
-│  • Current cost = 4                                                │
+│  • T = {A, B}                                                       │
+│  • Tree edges = [(A,B,4)]                                           │
+│  • deg[A]=1, deg[B]=1, deg[C]=0, deg[D]=0, deg[E]=0                 │
+│  • Current cost = 4                                                 │
 └─────────────────────────────────────────────────────────────────────┘
 
 Graf saat ini:
@@ -290,11 +290,11 @@ Graf saat ini:
 ┌─────────────────────────────────────────────────────────────────────┐
 │  ITERASI 1 - EDGE 2                                                 │
 ├─────────────────────────────────────────────────────────────────────┤
-│  T = {A, B}, mencari edge ke vertex di luar T                      │
-│  Candidates dari A: (A,C), (A,D), (A,E) [deg[A]=1 < 2 ✓]          │
-│  Candidates dari B: (B,C), (B,D), (B,E) [deg[B]=1 < 2 ✓]          │
+│  T = {A, B}, mencari edge ke vertex di luar T                       │
+│  Candidates dari A: (A,C), (A,D), (A,E) [deg[A]=1 < 2 ]             │
+│  Candidates dari B: (B,C), (B,D), (B,E) [deg[B]=1 < 2 ]             │
 │                                                                     │
-│  Total candidates: (A,C), (A,D), (A,E), (B,C), (B,D), (B,E)        │
+│  Total candidates: (A,C), (A,D), (A,E), (B,C), (B,D), (B,E)         │
 └─────────────────────────────────────────────────────────────────────┘
 
 Hitung nilai τ^α × η^β:
@@ -315,12 +315,12 @@ PROBABILITAS:
 ┌────────┬────────────┬─────────────────────────┐
 │  Edge  │   Value    │     Probability         │
 ├────────┼────────────┼─────────────────────────┤
-│ (A,C)  │   0.0123   │ 0.0123/0.1194 = 10.3%  │
-│ (A,D)  │   0.0083   │ 0.0083/0.1194 =  7.0%  │
-│ (A,E)  │   0.0204   │ 0.0204/0.1194 = 17.1%  │
-│ (B,C)  │   0.0625   │ 0.0625/0.1194 = 52.3%  │ ← Tertinggi!
-│ (B,D)  │   0.0059   │ 0.0059/0.1194 =  4.9%  │
-│ (B,E)  │   0.0100   │ 0.0100/0.1194 =  8.4%  │
+│ (A,C)  │   0.0123   │ 0.0123/0.1194 = 10.3%   │
+│ (A,D)  │   0.0083   │ 0.0083/0.1194 =  7.0%   │
+│ (A,E)  │   0.0204   │ 0.0204/0.1194 = 17.1%   │
+│ (B,C)  │   0.0625   │ 0.0625/0.1194 = 52.3%   │ -> Nilai Tertinggi!!!
+│ (B,D)  │   0.0059   │ 0.0059/0.1194 =  4.9%   │
+│ (B,E)  │   0.0100   │ 0.0100/0.1194 =  8.4%   │
 └────────┴────────────┴─────────────────────────┘
 
 → PILIH (B,C) dengan probabilitas tertinggi (52.3%)
@@ -331,13 +331,13 @@ PROBABILITAS:
 ┌─────────────────────────────────────────────────────────────────────┐
 │  SETELAH PILIH (B,C):                                               │
 ├─────────────────────────────────────────────────────────────────────┤
-│  • T = {A, B, C}                                                   │
-│  • Tree edges = [(A,B,4), (B,C,4)]                                 │
-│  • deg[A]=1, deg[B]=2, deg[C]=1, deg[D]=0, deg[E]=0               │
-│  • Current cost = 8                                                │
+│  • T = {A, B, C}                                                    │
+│  • Tree edges = [(A,B,4), (B,C,4)]                                  │
+│  • deg[A]=1, deg[B]=2, deg[C]=1, deg[D]=0, deg[E]=0                 │
+│  • Current cost = 8                                                 │
 │                                                                     │
-│  ⚠️ PERHATIAN: deg[B] = 2 = d_max                                  │
-│  → B sudah tidak bisa menerima edge lagi!                          │
+│  Tolong di garisbawahi bahwa degree : deg[B] = 2 = d_max   (index 0)│
+│  → B sudah tidak bisa menerima edge lagi!                           │
 └─────────────────────────────────────────────────────────────────────┘
 
 Graf saat ini:
@@ -349,13 +349,13 @@ Graf saat ini:
 ┌─────────────────────────────────────────────────────────────────────┐
 │  ITERASI 1 - EDGE 3                                                 │
 ├─────────────────────────────────────────────────────────────────────┤
-│  T = {A, B, C}, mencari edge ke {D, E}                             │
+│  T = {A, B, C}, mencari edge ke {D, E}                              │
 │                                                                     │
-│  Dari A (deg[A]=1 < 2): (A,D), (A,E) ✓                             │
-│  Dari B (deg[B]=2 = d_max): ❌ TIDAK BISA menambah edge            │
-│  Dari C (deg[C]=1 < 2): (C,D), (C,E) ✓                             │
+│  Dari A (deg[A]=1 < 2): (A,D), (A,E) ->OK!                          │
+│  Dari B (deg[B]=2 = d_max): JADI TIDAK BISA menambah edge           │
+│  Dari C (deg[C]=1 < 2): (C,D), (C,E) ->OK!                          │
 │                                                                     │
-│  Valid candidates: (A,D), (A,E), (C,D), (C,E)                      │
+│  Valid candidates: (A,D), (A,E), (C,D), (C,E)                       │
 └─────────────────────────────────────────────────────────────────────┘
 
 Hitung nilai τ^α × η^β:
@@ -363,7 +363,7 @@ Hitung nilai τ^α × η^β:
 • (A,D): 1.0^1 × 0.091^2 = 0.0083
 • (A,E): 1.0^1 × 0.143^2 = 0.0204
 • (C,D): 1.0^1 × 0.167^2 = 0.0279
-• (C,E): 1.0^1 × 0.500^2 = 0.2500  ← JAUH LEBIH TINGGI!
+• (C,E): 1.0^1 × 0.500^2 = 0.2500  -> MEMILIKI NILAI YANg JAUH LEBIH TINGGI!
 
 Total = 0.0083 + 0.0204 + 0.0279 + 0.2500 = 0.3066
 
@@ -371,10 +371,10 @@ PROBABILITAS:
 ┌────────┬────────────┬─────────────────────────┐
 │  Edge  │   Value    │     Probability         │
 ├────────┼────────────┼─────────────────────────┤
-│ (A,D)  │   0.0083   │ 0.0083/0.3066 =  2.7%  │
-│ (A,E)  │   0.0204   │ 0.0204/0.3066 =  6.7%  │
-│ (C,D)  │   0.0279   │ 0.0279/0.3066 =  9.1%  │
-│ (C,E)  │   0.2500   │ 0.2500/0.3066 = 81.5%  │ ← SANGAT TINGGI!
+│ (A,D)  │   0.0083   │ 0.0083/0.3066 =  2.7%   │
+│ (A,E)  │   0.0204   │ 0.0204/0.3066 =  6.7%   │
+│ (C,D)  │   0.0279   │ 0.0279/0.3066 =  9.1%   │
+│ (C,E)  │   0.2500   │ 0.2500/0.3066 = 81.5%   │ -> SANGAT TINGGI!/Paling berpeluang
 └────────┴────────────┴─────────────────────────┘
 
 → PILIH (C,E) dengan probabilitas 81.5%
@@ -386,12 +386,12 @@ PROBABILITAS:
 ┌─────────────────────────────────────────────────────────────────────┐
 │  SETELAH PILIH (C,E):                                               │
 ├─────────────────────────────────────────────────────────────────────┤
-│  • T = {A, B, C, E}                                                │
-│  • Tree edges = [(A,B,4), (B,C,4), (C,E,2)]                        │
-│  • deg[A]=1, deg[B]=2, deg[C]=2, deg[D]=0, deg[E]=1               │
-│  • Current cost = 10                                               │
+│  • T = {A, B, C, E}                                                 │
+│  • Tree edges = [(A,B,4), (B,C,4), (C,E,2)]                         │
+│  • deg[A]=1, deg[B]=2, deg[C]=2, deg[D]=0, deg[E]=1                 │
+│  • Current cost = 10                                                │
 │                                                                     │
-│  ⚠️ deg[B] = 2, deg[C] = 2 (keduanya sudah maksimal)              │
+│  KARENA deg[B] = 2, deg[C] = 2 (keduanya sudah maksimal degree)     │
 └─────────────────────────────────────────────────────────────────────┘
 
 Graf saat ini:
@@ -407,14 +407,14 @@ Graf saat ini:
 ┌─────────────────────────────────────────────────────────────────────┐
 │  ITERASI 1 - EDGE 4 (FINAL)                                         │
 ├─────────────────────────────────────────────────────────────────────┤
-│  T = {A, B, C, E}, mencari edge ke {D}                             │
+│  T = {A, B, C, E}, mencari edge ke {D}                              │
 │                                                                     │
-│  Dari A (deg[A]=1 < 2): (A,D) ✓                                    │
-│  Dari B (deg[B]=2): ❌                                              │
-│  Dari C (deg[C]=2): ❌                                              │
-│  Dari E (deg[E]=1 < 2): (E,D) ✓                                    │
+│  Dari A (deg[A]=1 < 2): (A,D) ->OK!                                 │
+│  Dari B (deg[B]=2): Sudah Max                                       │
+│  Dari C (deg[C]=2): Sudah Max                                       │
+│  Dari E (deg[E]=1 < 2): (E,D) ->OK!                                 │
 │                                                                     │
-│  Valid candidates: (A,D), (E,D)                                    │
+│  Valid candidates: (A,D), (E,D)                                     │
 └─────────────────────────────────────────────────────────────────────┘
 
 Hitung nilai τ^α × η^β:
@@ -428,8 +428,8 @@ PROBABILITAS:
 ┌────────┬────────────┬─────────────────────────┐
 │  Edge  │   Value    │     Probability         │
 ├────────┼────────────┼─────────────────────────┤
-│ (A,D)  │   0.0083   │ 0.0083/0.0239 = 34.7%  │
-│ (E,D)  │   0.0156   │ 0.0156/0.0239 = 65.3%  │ ← Lebih tinggi
+│ (A,D)  │   0.0083   │ 0.0083/0.0239 = 34.7%   │
+│ (E,D)  │   0.0156   │ 0.0156/0.0239 = 65.3%   │ >Memiliki nilai Probability Tertinggi
 └────────┴────────────┴─────────────────────────┘
 
 → PILIH (E,D) dengan probabilitas 65.3%
@@ -441,18 +441,18 @@ PROBABILITAS:
 ║  SEMUT 1 - HASIL AKHIR                                              ║
 ╠═════════════════════════════════════════════════════════════════════╣
 ║                                                                     ║
-║  Tree edges: [(A,B,4), (B,C,4), (C,E,2), (E,D,8)]                  ║
+║  Tree edges: [(A,B,4), (B,C,4), (C,E,2), (E,D,8)]                   ║
 ║                                                                     ║
-║  TOTAL COST = 4 + 4 + 2 + 8 = 18                                   ║
+║  TOTAL COST = 4 + 4 + 2 + 8 = 18                                    ║
 ║                                                                     ║
 ║  Degree Check:                                                      ║
-║  • deg[A] = 1 ≤ 2 ✓                                                ║
-║  • deg[B] = 2 ≤ 2 ✓                                                ║
-║  • deg[C] = 2 ≤ 2 ✓                                                ║
-║  • deg[D] = 1 ≤ 2 ✓                                                ║
-║  • deg[E] = 2 ≤ 2 ✓                                                ║
+║  • deg[A] = 1 ≤ 2                                                   ║
+║  • deg[B] = 2 ≤ 2                                                   ║
+║  • deg[C] = 2 ≤ 2                                                   ║
+║  • deg[D] = 1 ≤ 2                                                   ║
+║  • deg[E] = 2 ≤ 2                                                   ║
 ║                                                                     ║
-║  ✅ VALID DCMST SOLUTION!                                           ║
+║  VALID DCMST SOLUTION!                                           ║
 ╚═════════════════════════════════════════════════════════════════════╝
 
 Graf Akhir Semut 1:
@@ -580,15 +580,15 @@ Graf Akhir Semut 3:
 ║  RINGKASAN ITERASI 1 - SEMUA SEMUT                                  ║
 ╠═════════════════════════════════════════════════════════════════════╣
 ║                                                                     ║
-║  ┌─────────┬────────────────────────────────────┬───────────────┐  ║
-║  │  Semut  │           Tree Edges               │     Cost      │  ║
-║  ├─────────┼────────────────────────────────────┼───────────────┤  ║
-║  │    1    │  (A,B), (B,C), (C,E), (E,D)       │      18       │  ║
-║  │    2    │  (A,E), (E,C), (C,B), (A,D)       │      24       │  ║
-║  │    3    │  (A,B), (B,C), (A,E), (C,D)       │      21       │  ║
-║  └─────────┴────────────────────────────────────┴───────────────┘  ║
+║  ┌─────────┬────────────────────────────────────┬───────────────┐   ║
+║  │  Semut  │           Tree Edges               │     Cost      │   ║
+║  ├─────────┼────────────────────────────────────┼───────────────┤   ║
+║  │    1    │  (A,B), (B,C), (C,E), (E,D)        │      18       │   ║
+║  │    2    │  (A,E), (E,C), (C,B), (A,D)        │      24       │   ║
+║  │    3    │  (A,B), (B,C), (A,E), (C,D)        │      21       │   ║
+║  └─────────┴────────────────────────────────────┴───────────────┘   ║
 ║                                                                     ║
-║  🏆 BEST SOLUTION: Semut 1 dengan Cost = 18                        ║
+║  !!!BEST SOLUTION: Semut 1 dengan Cost = 18                         ║
 ║                                                                     ║
 ╚═════════════════════════════════════════════════════════════════════╝
 ```
@@ -601,11 +601,11 @@ Graf Akhir Semut 3:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│  EVAPORASI: τ_new = (1 - ρ) × τ_old = 0.5 × τ_old                  │
+│  EVAPORASI: τ_new = (1 - ρ) × τ_old = 0.5 × τ_old                   │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
-│  Semua feromon dikurangi 50%:                                      │
-│  τ[i][j] = 0.5 × 1.0 = 0.5 untuk semua edge                       │
+│  Semua feromon dikurangi 50%:                                       │
+│  τ[i][j] = 0.5 × 1.0 = 0.5 untuk semua edge                         │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
 
@@ -724,10 +724,10 @@ PROBABILITAS BARU:
 ┌────────┬────────────┬─────────────────────────┐
 │  Edge  │   Value    │     Probability         │
 ├────────┼────────────┼─────────────────────────┤
-│ (A,B)  │   0.676    │ 0.676/0.913 = 74.0%    │ ← NAIK dari 60.4%!
-│ (A,C)  │   0.006    │ 0.006/0.913 =  0.7%    │ ← TURUN dari 11.9%
-│ (A,D)  │   0.039    │ 0.039/0.913 =  4.3%    │ ← TURUN dari 8.0%
-│ (A,E)  │   0.192    │ 0.192/0.913 = 21.0%    │ ← NAIK dari 19.7%
+│ (A,B)  │   0.676    │ 0.676/0.913 = 74.0%     │ -> NAIK dari 60.4%!
+│ (A,C)  │   0.006    │ 0.006/0.913 =  0.7%     │ -> TURUN dari 11.9%
+│ (A,D)  │   0.039    │ 0.039/0.913 =  4.3%     │ -> TURUN dari 8.0%
+│ (A,E)  │   0.192    │ 0.192/0.913 = 21.0%     │ -> NAIK dari 19.7%
 └────────┴────────────┴─────────────────────────┘
 
 → Feromon membuat edge bagus (A,B) dan (A,E) lebih mungkin dipilih!
@@ -747,37 +747,37 @@ PROBABILITAS BARU:
 ║                      HASIL AKHIR ACO-DCMST                          ║
 ╠═════════════════════════════════════════════════════════════════════╣
 ║                                                                     ║
-║  🏆 BEST DCMST FOUND:                                               ║
+║  !!!BEST DCMST FOUND:                                               ║
 ║                                                                     ║
-║  Edges: (A,B), (B,C), (C,E), (E,D)                                 ║
-║  Weights: 4 + 4 + 2 + 8 = 18                                       ║
+║  Edges: (A,B), (B,C), (C,E), (E,D)                                  ║
+║  Weights: 4 + 4 + 2 + 8 = 18                                        ║
 ║                                                                     ║
-║  ┌─────────────────────────────────────────────────────────────┐   ║
-║  │                                                             │   ║
-║  │     A ═══4═══ B ═══4═══ C                                  │   ║
-║  │                         ║                                  │   ║
-║  │                         2                                  │   ║
-║  │                         ║                                  │   ║
-║  │               D ═══8═══ E                                  │   ║
-║  │                                                             │   ║
-║  └─────────────────────────────────────────────────────────────┘   ║
+║  ┌─────────────────────────────────────────────────────────────┐    ║
+║  │                                                             │    ║
+║  │     A ═══4═══ B ═══4═══ C                                   │    ║
+║  │                         ║                                   │    ║
+║  │                         2                                   │    ║
+║  │                         ║                                   │    ║
+║  │               D ═══8═══ E                                   │    ║
+║  │                                                             │    ║
+║  └─────────────────────────────────────────────────────────────┘    ║
 ║                                                                     ║
 ║  DEGREE VERIFICATION:                                               ║
-║  ┌────────┬─────────┬────────────┐                                 ║
-║  │ Vertex │ Degree  │  Status    │                                 ║
-║  ├────────┼─────────┼────────────┤                                 ║
-║  │   A    │    1    │  ≤ 2 ✓    │                                 ║
-║  │   B    │    2    │  ≤ 2 ✓    │                                 ║
-║  │   C    │    2    │  ≤ 2 ✓    │                                 ║
-║  │   D    │    1    │  ≤ 2 ✓    │                                 ║
-║  │   E    │    2    │  ≤ 2 ✓    │                                 ║
-║  └────────┴─────────┴────────────┘                                 ║
+║  ┌────────┬─────────┬────────────┐                                  ║
+║  │ Vertex │ Degree  │  Status    │                                  ║
+║  ├────────┼─────────┼────────────┤                                  ║
+║  │   A    │    1    │  ≤ 2       │   ->OK                           ║
+║  │   B    │    2    │  ≤ 2       │   ->OK                           ║
+║  │   C    │    2    │  ≤ 2       │   ->OK                           ║
+║  │   D    │    1    │  ≤ 2       │   ->OK                           ║
+║  │   E    │    2    │  ≤ 2       │   ->OK                           ║
+║  └────────┴─────────┴────────────┘                                  ║
 ║                                                                     ║
-║  ✅ ALL DEGREE CONSTRAINTS SATISFIED!                               ║
-║  ✅ TREE IS CONNECTED (4 edges for 5 vertices)                      ║
-║  ✅ NO CYCLES                                                        ║
+║  *ALL DEGREE CONSTRAINTS SATISFIED!                                 ║
+║  *TREE IS CONNECTED (4 edges for 5 vertices)                        ║
+║  *NO CYCLES                                                         ║
 ║                                                                     ║
-║  📊 TOTAL COST: 18                                                  ║
+║  TOTAL COST: 18                                                     ║
 ║                                                                     ║
 ╚═════════════════════════════════════════════════════════════════════╝
 ```
@@ -832,47 +832,47 @@ KESIMPULAN:
 ║                    RINGKASAN SEMUA RUMUS ACO-DCMST                  ║
 ╠═════════════════════════════════════════════════════════════════════╣
 ║                                                                     ║
-║  1. HEURISTIK (Visibility):                                        ║
-║     ┌─────────────────────────┐                                    ║
-║     │        1                │                                    ║
-║     │ η[i][j] = ────────      │                                    ║
-║     │          d[i][j]        │                                    ║
-║     └─────────────────────────┘                                    ║
+║  1. HEURISTIK (Visibility):                                         ║
+║     ┌─────────────────────────┐                                     ║
+║     │        1                │                                     ║
+║     │ η[i][j] = ────────      │                                     ║
+║     │          d[i][j]        │                                     ║
+║     └─────────────────────────┘                                     ║
 ║                                                                     ║
-║  2. PROBABILITAS PEMILIHAN EDGE:                                   ║
-║     ┌─────────────────────────────────────────────────────────┐    ║
-║     │           [τ[u][v]]^α × [η[u][v]]^β × feasible(u,v)     │    ║
-║     │ P(u,v) = ─────────────────────────────────────────────  │    ║
-║     │          Σ [τ[u][w]]^α × [η[u][w]]^β × feasible(u,w)    │    ║
-║     │          w                                               │    ║
-║     └─────────────────────────────────────────────────────────┘    ║
+║  2. PROBABILITAS PEMILIHAN EDGE:                                    ║
+║     ┌─────────────────────────────────────────────────────────┐     ║
+║     │           [τ[u][v]]^α × [η[u][v]]^β × feasible(u,v)     │     ║
+║     │ P(u,v) = ─────────────────────────────────────────────  │     ║
+║     │          Σ [τ[u][w]]^α × [η[u][w]]^β × feasible(u,w)    │     ║
+║     │          w                                              │     ║
+║     └─────────────────────────────────────────────────────────┘     ║
 ║                                                                     ║
-║     feasible(u,v) = 1 jika deg[u] < d_max AND deg[v] < d_max       ║
+║     feasible(u,v) = 1 jika deg[u] < d_max AND deg[v] < d_max        ║
 ║                   = 0 otherwise                                     ║
 ║                                                                     ║
-║  3. EVAPORASI FEROMON:                                             ║
-║     ┌─────────────────────────────────────┐                        ║
-║     │ τ[i][j] ← (1 - ρ) × τ[i][j]         │                        ║
-║     └─────────────────────────────────────┘                        ║
+║  3. EVAPORASI FEROMON:                                              ║
+║     ┌─────────────────────────────────────┐                         ║
+║     │ τ[i][j] ← (1 - ρ) × τ[i][j]         │                         ║
+║     └─────────────────────────────────────┘                         ║
 ║                                                                     ║
-║  4. DEPOSIT FEROMON:                                               ║
-║     ┌─────────────────────────────────────┐                        ║
-║     │         Q                           │                        ║
-║     │ Δτ = ────────                       │                        ║
-║     │      Cost(T)                        │                        ║
-║     │                                     │                        ║
-║     │ τ[i][j] ← τ[i][j] + Σ Δτₖ          │                        ║
-║     │                      k              │                        ║
-║     └─────────────────────────────────────┘                        ║
+║  4. DEPOSIT FEROMON:                                                ║
+║     ┌─────────────────────────────────────┐                         ║
+║     │         Q                           │                         ║
+║     │ Δτ = ────────                       │                         ║
+║     │      Cost(T)                        │                         ║
+║     │                                     │                         ║
+║     │ τ[i][j] ← τ[i][j] + Σ Δτₖ           │                        ║
+║     │                      k              │                         ║
+║     └─────────────────────────────────────┘                         ║
 ║                                                                     ║
-║  5. UPDATE FEROMON LENGKAP:                                        ║
-║     ┌─────────────────────────────────────────────────────────┐    ║
-║     │                          m                               │    ║
-║     │ τ[i][j] ← (1-ρ) × τ[i][j] + Σ Δτₖ                       │    ║
+║  5. UPDATE FEROMON LENGKAP:                                         ║
+║     ┌─────────────────────────────────────────────────────────┐     ║
+║     │                          m                              │     ║
+║     │ τ[i][j] ← (1-ρ) × τ[i][j] + Σ Δτₖ                        │     ║
 ║     │                          k=1                             │    ║
 ║     │                                                          │    ║
-║     │ m = jumlah semut yang menggunakan edge (i,j)            │    ║
-║     └─────────────────────────────────────────────────────────┘    ║
+║     │ m = jumlah semut yang menggunakan edge (i,j)            │     ║
+║     └─────────────────────────────────────────────────────────┘     ║
 ║                                                                     ║
 ╚═════════════════════════════════════════════════════════════════════╝
 ```
@@ -924,33 +924,33 @@ KESIMPULAN:
                               ▼
                ┌──────────────────────────────────┐
                │  Get candidates:                 │
-               │  {(u,v): u∈T, v∉T,              │
-               │   deg[u]<d_max, deg[v]<d_max}   │
+               │  {(u,v): u∈T, v∉T,               │
+               │   deg[u]<d_max, deg[v]<d_max}    │
                └──────────────┬───────────────────┘
                               │
                               ▼
                ┌──────────────────────────────────┐
-               │  Calculate P(u,v) for all       │
-               │  candidates using formula       │
+               │  Calculate P(u,v) for all        │
+               │  candidates using formula        │
                └──────────────┬───────────────────┘
                               │
                               ▼
                ┌──────────────────────────────────┐
-               │  Select edge (u,v) using        │
-               │  roulette wheel selection       │
+               │  Select edge (u,v) using         │
+               │  roulette wheel selection        │
                └──────────────┬───────────────────┘
                               │
                               ▼
                ┌──────────────────────────────────┐
-               │  Add edge to tree:              │
-               │  • tree_edges.add((u,v))        │
-               │  • T.add(v)                     │
-               │  • deg[u]++, deg[v]++           │
+               │  Add edge to tree:               │
+               │  • tree_edges.add((u,v))         │
+               │  • T.add(v)                      │
+               │  • deg[u]++, deg[v]++            │
                └──────────────┬───────────────────┘
                               │
                               ▼
                ┌──────────────────────────────────┐
-               │  |tree_edges| = n-1?            │
+               │  |tree_edges| = n-1?             │
                └──────────────┬───────────────────┘
                               │
                     ┌─────────┴─────────┐
@@ -1001,31 +1001,31 @@ KESIMPULAN:
 
 ```
 ╔═════════════════════════════════════════════════════════════════════╗
-║                         KESIMPULAN                                   ║
+║                         KESIMPULAN AWAL                             ║
 ╠═════════════════════════════════════════════════════════════════════╣
 ║                                                                     ║
-║  ACO-DCMST adalah algoritma hybrid yang menggabungkan:              ║
+║  Bahwa ACO-DCMST adalah algoritma hybrid yang menggabungkan:        ║
 ║                                                                     ║
-║  1. 🐜 ANT COLONY OPTIMIZATION:                                     ║
+║  1. ANT COLONY OPTIMIZATION:                                        ║
 ║     • Feromon untuk menyimpan "pengalaman" kolektif                 ║
 ║     • Probabilistic selection                                       ║
 ║     • Multiple agents (semut) exploring                             ║
 ║                                                                     ║
-║  2. 🌳 PRIM'S MST APPROACH:                                         ║
+║  2. PRIM'S MST APPROACH:                                            ║
 ║     • Tree growing dari central vertex                              ║
 ║     • Selalu maintain connected tree                                ║
 ║     • Greedy selection dengan ACO probability                       ║
 ║                                                                     ║
-║  3. 🔒 DEGREE CONSTRAINT:                                           ║
+║  3. DEGREE CONSTRAINT:                                              ║
 ║     • Setiap vertex maksimal d_max koneksi                          ║
 ║     • Feasibility check sebelum selection                           ║
 ║     • Menjamin solusi valid                                         ║
 ║                                                                     ║
 ║  HASIL CONTOH:                                                      ║
-║  • Input: 5 kota, degree ≤ 2                                        ║
+║  • Input: 5 kota, degree ≤ 2  (pada case di atas ini)               ║
 ║  • MST optimal: 16 (melanggar degree)                               ║
-║  • DCMST optimal: 18 (semua degree ≤ 2)                            ║
-║  • ACO menemukan DCMST = 18 ✓                                       ║
+║  • DCMST optimal: 18 (semua degree ≤ 2)                             ║
+║  • ACO menemukan DCMST = 18                                         ║
 ║                                                                     ║
 ╚═════════════════════════════════════════════════════════════════════╝
 ```
