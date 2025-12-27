@@ -1,4 +1,4 @@
-# 🐜 ACO untuk Multi-Period Degree Constrained MST (MPDCMST)
+#    ACO untuk Multi-Period Degree Constrained MST (MPDCMST)
 ## Panduan Lengkap dengan Perhitungan Step-by-Step
 ### Case Study: 30 Vertex dengan 3 Periode
 
@@ -12,7 +12,7 @@
 
 ```
 ╔═════════════════════════════════════════════════════════════════════╗
-║  🐜 PRINSIP DASAR ACO:                                              ║
+║     PRINSIP DASAR ACO:                                              ║
 ╠═════════════════════════════════════════════════════════════════════╣
 ║                                                                     ║
 ║  1. Semut meninggalkan FEROMON di jalur yang dilalui               ║
@@ -442,7 +442,7 @@ if hvt_verification[period]['satisfied']:
 ║                                                                     ║
 ║  HASIL PERIODE 1:                                                   ║
 ║  • 10 edges installed                                               ║
-║  • HVT {2,3} ✅ SATISFIED                                           ║
+║  • HVT {2,3} !!! SATISFIED                                           ║
 ║  • Cost periode 1 = 310                                             ║
 ║                                                                     ║
 ╚═════════════════════════════════════════════════════════════════════╝
@@ -471,7 +471,7 @@ if hvt_verification[period]['satisfied']:
 ║                                                                     ║
 ║  HASIL PERIODE 2:                                                   ║
 ║  • 10 edges installed                                               ║
-║  • HVT {4,5} ✅ SATISFIED                                           ║
+║  • HVT {4,5} !!! SATISFIED                                           ║
 ║  • Cost periode 2 = 329                                             ║
 ║                                                                     ║
 ╚═════════════════════════════════════════════════════════════════════╝
@@ -495,7 +495,7 @@ if hvt_verification[period]['satisfied']:
 ║                                                                     ║
 ║  HASIL PERIODE 3:                                                   ║
 ║  • 9 edges installed                                                ║
-║  • HVT {6,7} ✅ SATISFIED                                           ║
+║  • HVT {6,7} !!! SATISFIED                                           ║
 ║  • Cost periode 3 = 921                                             ║
 ║                                                                     ║
 ╚═════════════════════════════════════════════════════════════════════╝
@@ -694,7 +694,7 @@ Misalkan dari 15 semut, ada 12 solusi VALID dengan cost:
 
 ```
 ══════════════════════════════════════════════════════════════════════
-  🐜 ACO MPDCMST SOLVER
+     ACO MPDCMST SOLVER
 ══════════════════════════════════════════════════════════════════════
   Graph: 30 vertices, 435 edges
   Target: 29 edges (spanning tree)
@@ -710,7 +710,7 @@ Misalkan dari 15 semut, ada 12 solusi VALID dengan cost:
 ══════════════════════════════════════════════════════════════════════
   Early stopping at iteration 10
 ══════════════════════════════════════════════════════════════════════
-  ✅ SOLUTION FOUND: Cost = 1560
+  !!! SOLUTION FOUND: Cost = 1560
 ══════════════════════════════════════════════════════════════════════
 ```
 
@@ -729,11 +729,11 @@ Misalkan dari 15 semut, ada 12 solusi VALID dengan cost:
 ╠════════════════════════════════════════════════════════════════════╣
 ║  Period │ HVT Required     │ Connected        │ Status             ║
 ║─────────┼──────────────────┼──────────────────┼─────────────────── ║
-║    1    │ {2, 3}           │ {2, 3}           │ ✅ SATISFIED       ║
-║    2    │ {4, 5}           │ {4, 5}           │ ✅ SATISFIED       ║
-║    3    │ {6, 7}           │ {6, 7}           │ ✅ SATISFIED       ║
+║    1    │ {2, 3}           │ {2, 3}           │ !!! SATISFIED       ║
+║    2    │ {4, 5}           │ {4, 5}           │ !!! SATISFIED       ║
+║    3    │ {6, 7}           │ {6, 7}           │ !!! SATISFIED       ║
 ╠════════════════════════════════════════════════════════════════════╣
-║  Overall Status : ✅ ALL SATISFIED                                 ║
+║  Overall Status : !!! ALL SATISFIED                                 ║
 ╠════════════════════════════════════════════════════════════════════╣
 ║                      PERIOD DETAILS                                ║
 ╠════════════════════════════════════════════════════════════════════╣
@@ -741,7 +741,7 @@ Misalkan dari 15 semut, ada 12 solusi VALID dengan cost:
 ║  Period 2: 10 edges, cost =    329                                 ║
 ║  Period 3:  9 edges, cost =    921                                 ║
 ╠════════════════════════════════════════════════════════════════════╣
-║  🏆 TOTAL COST: 1560                                               ║
+║     TOTAL COST: 1560                                               ║
 ╚════════════════════════════════════════════════════════════════════╝
 ```
 
@@ -883,12 +883,12 @@ Misalkan dari 15 semut, ada 12 solusi VALID dengan cost:
 ║  ┣━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫    ║
 ║  ┃ Period 3 Cost          ┃ 921 (9 edges)                    ┃       ║
 ║  ┣━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫    ║
-║  ┃ HVT Status             ┃ ✅ ALL SATISFIED                 ┃       ║
+║  ┃ HVT Status             ┃ !!! ALL SATISFIED                 ┃       ║
 ║  ┣━━━━━━━━━━━━━━━━━━━━━━━━╋━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫    ║
 ║  ┃ Convergence            ┃ Early stop at iteration 10       ┃       ║
 ║  ┗━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛    ║
 ║                                                                      ║
-║  🏆 ACO-MPDCMST berhasil menemukan solusi VALID dengan               ║
+║   ACO-MPDCMST berhasil menemukan solusi VALID dengan                 ║
 ║     cost = 1560 dalam waktu singkat (10 iterasi)!                    ║
 ║                                                                      ║
 ╚══════════════════════════════════════════════════════════════════════╝
@@ -928,7 +928,7 @@ Misalkan dari 15 semut, ada 12 solusi VALID dengan cost:
 ┃   51-70     ┃   35    ┃     300      ┃  1.0   ┃  2.5   ┃  0.2  ┃
 ┃   > 70      ┃   50    ┃     400      ┃  1.0   ┃  2.5   ┃  0.2  ┃
 ┗━━━━━━━━━━━━━┻━━━━━━━━━┻━━━━━━━━━━━━━━┻━━━━━━━━┻━━━━━━━━┻━━━━━━━┛
-```
+
 
 --- 
 Referensi:
@@ -939,6 +939,7 @@ Wamiliana, Usman, M., Sakethi, D., Yuniarti, R., & Cucus, A. (2015b). The hybrid
 Wamiliana, Junaidi, A., Amanto, Usman, M., & Warsono. (2020a). WAC4 algorithm to solve the multiperiod degree constrained minimum spanning tree problem. Journal of Physics: Conference Series, 1524, 012046.
 Wamiliana, Usman, M., Warsito, W., Warsono, W., & Daoud, J. I. (2020b). Using modification of Prim’s algorithm and GNU Octave to solve the multiperiod installation problem. IIUM Engineering Journal, 21(1), 100–112.
 Wamiliana, W., Junaidi, A., Gamal, M. D. H., & Thamrin, T. (2024). The use of probability and edge analysis to solve the multiperiod degree constrained minimum spanning tree problem. Science and Technology Indonesia, 9(4).​
+```
 
 **═══════════════════════════════════════════════════════════════════**
 **                        END OF DOCUMENT                            **
