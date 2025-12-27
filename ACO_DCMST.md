@@ -1,4 +1,4 @@
-# Contoh Hitung Manual ACO untuk Degree Constrained Minimum Spanning Tree (DCMST)
+# Contoh Hitung Manual ACO untuk Degree Constrained Minimum Spanning Tree (DCMST) D-MAX=2
 ## Panduan Lengkap dengan Perhitungan Step-by-Step
 
 ---
